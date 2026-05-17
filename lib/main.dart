@@ -2,7 +2,17 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-void main() {
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
+Future<void> main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const MovieFlixApp());
 }
 
@@ -12,6 +22,7 @@ class MovieFlixApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'MovieFlix',
@@ -36,178 +47,228 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    fetchFeaturedCharacter();
+    fetchPokemon();
   }
 
-  Future<void> fetchFeaturedCharacter() async {
+  Future<void> fetchPokemon() async {
 
     final response = await http.get(
-      Uri.parse('https://pokeapi.co/api/v2/pokemon/lucario'),
+      Uri.parse(
+        'https://pokeapi.co/api/v2/pokemon/lucario',
+      ),
     );
 
-    if (response.statusCode == 200) {
+    if(response.statusCode==200){
 
-      final data = json.decode(response.body);
+      final data=jsonDecode(response.body);
 
       setState(() {
-        pokemonName = data['name'];
-        pokemonImage =
-        data['sprites']['other']['official-artwork']['front_default'];
+
+        pokemonName=data["name"];
+
+        pokemonImage=data["sprites"]
+        ["other"]
+        ["official-artwork"]
+        ["front_default"];
+
       });
     }
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
 
     return Scaffold(
-      body: Stack(
-        children: [
 
-          // IMAGEN DE FONDO
+      body: Stack(
+        children:[
+
           Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/cinema.jpg'),
-                fit: BoxFit.cover,
+            decoration:const BoxDecoration(
+              image:DecorationImage(
+                image:AssetImage(
+                  'assets/cinema.jpg',
+                ),
+                fit:BoxFit.cover,
               ),
             ),
           ),
 
-          // CAPA OSCURA
           Container(
-            color: Colors.black.withValues(alpha: 0.6),
+            color: Colors.black.withValues(
+              alpha:.6,
+            ),
           ),
 
-          // CONTENIDO PRINCIPAL
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+          SafeArea(
+            child: Column(
 
-              // TÍTULO SUPERIOR
-              const Padding(
-                padding: EdgeInsets.only(top: 60),
-                child: Text(
-                  'MovieFlix',
-                  style: TextStyle(
-                    color: Colors.lightBlueAccent,
-                    fontSize: 36,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 2,
+              mainAxisAlignment:
+              MainAxisAlignment.spaceBetween,
+
+              children:[
+
+                const Padding(
+                  padding: EdgeInsets.only(
+                    top:20,
+                  ),
+
+                  child: Text(
+                    "MovieFlix",
+
+                    style:TextStyle(
+                      color:
+                      Colors.lightBlueAccent,
+                      fontSize:36,
+                      fontWeight:
+                      FontWeight.bold,
+                    ),
                   ),
                 ),
-              ),
 
-              // CONTENIDO CENTRAL
-              Column(
-                children: [
+                Column(
+                  children:[
 
-                  const Text(
-                    'Bienvenido',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 42,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                    const Text(
+                      "Bienvenido",
 
-                  const SizedBox(height: 10),
-
-                  const Text(
-                    'Explora contenido destacado',
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 18,
-                    ),
-                  ),
-
-                  const SizedBox(height: 30),
-
-                  pokemonImage != ""
-                      ? Image.network(
-                          pokemonImage,
-                          width: 180,
-                        )
-                      : const CircularProgressIndicator(),
-
-                  const SizedBox(height: 20),
-
-                  Text(
-                    pokemonName.toUpperCase(),
-                    style: const TextStyle(
-                      color: Colors.yellow,
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-
-              // BOTONES INFERIORES
-              Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 50,
-                  left: 30,
-                  right: 30,
-                ),
-
-                child: Column(
-                  children: [
-
-                    // BOTÓN INICIAR SESIÓN
-                    Container(
-                      width: double.infinity,
-                      height: 55,
-
-                      decoration: BoxDecoration(
-                        color: Colors.lightBlueAccent,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-
-                      child: const Center(
-                        child: Text(
-                          'Iniciar Sesión',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                      style:TextStyle(
+                        color:Colors.white,
+                        fontSize:42,
+                        fontWeight:
+                        FontWeight.bold,
                       ),
                     ),
 
-                    const SizedBox(height: 15),
+                    const SizedBox(
+                      height:15,
+                    ),
 
-                    // BOTÓN CREAR CUENTA
-                    Container(
-                      width: double.infinity,
-                      height: 55,
+                    const Text(
+                      "Firebase conectado correctamente",
 
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.white,
-                          width: 2,
-                        ),
-
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-
-                      child: const Center(
-                        child: Text(
-                          'Crear Cuenta',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                      style:TextStyle(
+                        color:
+                        Colors.white70,
                       ),
                     ),
+
+                    const SizedBox(
+                      height:30,
+                    ),
+
+                    pokemonImage!=""
+                    ?Image.network(
+                      pokemonImage,
+                      width:180,
+                    )
+                    :const CircularProgressIndicator(),
+
+                    const SizedBox(
+                      height:15,
+                    ),
+
+                    Text(
+
+                      pokemonName.toUpperCase(),
+
+                      style:
+                      const TextStyle(
+                        color:
+                        Colors.yellow,
+                        fontSize:25,
+                        fontWeight:
+                        FontWeight.bold,
+                      ),
+                    )
+
                   ],
                 ),
-              ),
-            ],
-          ),
+
+                Padding(
+
+                  padding:
+                  const EdgeInsets.all(30),
+
+                  child:Column(
+                    children:[
+
+                      Container(
+
+                        width:double.infinity,
+                        height:55,
+
+                        decoration:
+                        BoxDecoration(
+
+                          color:
+                          Colors.lightBlueAccent,
+
+                          borderRadius:
+                          BorderRadius.circular(15),
+                        ),
+
+                        child:
+                        const Center(
+
+                          child:Text(
+                            "Iniciar Sesión",
+
+                            style:
+                            TextStyle(
+                              color:
+                              Colors.black,
+                              fontWeight:
+                              FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(
+                        height:15,
+                      ),
+
+                      Container(
+
+                        width:double.infinity,
+                        height:55,
+
+                        decoration:
+                        BoxDecoration(
+
+                          border:
+                          Border.all(
+                            color:
+                            Colors.white,
+                          ),
+
+                          borderRadius:
+                          BorderRadius.circular(15),
+                        ),
+
+                        child:
+                        const Center(
+
+                          child:Text(
+                            "Crear Cuenta",
+
+                            style:
+                            TextStyle(
+                              color:
+                              Colors.white,
+                              fontWeight:
+                              FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          )
         ],
       ),
     );

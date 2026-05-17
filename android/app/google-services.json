@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "863023427999",
+    "project_id": "movieflix-70634",
+    "storage_bucket": "movieflix-70634.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:863023427999:android:7cc1a650729517756e0daa",
+        "android_client_info": {
+          "package_name": "com.example.ldsw_home_screen"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcW2XEDunGIC0PRjenT50WgAQJJLc1Kj4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
